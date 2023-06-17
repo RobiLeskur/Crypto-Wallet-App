@@ -1,0 +1,15 @@
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\bin\Debug\net6.0\Crypto-Wallet-App.exe
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\bin\Debug\net6.0\Crypto-Wallet-App.deps.json
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\bin\Debug\net6.0\Crypto-Wallet-App.runtimeconfig.json
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\bin\Debug\net6.0\Crypto-Wallet-App.dll
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\bin\Debug\net6.0\Crypto-Wallet-App.pdb
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.csproj.AssemblyReference.cache
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.AssemblyInfoInputs.cache
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.AssemblyInfo.cs
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.csproj.CoreCompileInputs.cache
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.dll
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\refint\Crypto-Wallet-App.dll
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.pdb
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\Crypto-Wallet-App.genruntimeconfig.cache
+C:\Users\rober\OneDrive - CARNET\Desktop\Crypto-Wallet-App\Crypto-Wallet-App\Crypto-Wallet-App\obj\Debug\net6.0\ref\Crypto-Wallet-App.dll
