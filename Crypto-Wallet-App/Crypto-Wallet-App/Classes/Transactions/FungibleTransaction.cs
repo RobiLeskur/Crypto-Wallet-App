@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crypto_Wallet_App.Classes.Wallets
+namespace Crypto_Wallet_App.Classes.Transactions
 {
-    class BitcoinWallet : Wallet
+    internal class FungibleTransaction
     {
-        public BitcoinWallet() : base() { }
-        
-
     }
 }

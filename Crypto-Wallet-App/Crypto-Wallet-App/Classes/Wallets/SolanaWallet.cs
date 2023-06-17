@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Crypto_Wallet_App.Classes.Wallets
 {
-    internal class SolanaWallet
+     class SolanaWallet : WalletContainingNonFungibleAssets
     {
+        public SolanaWallet() : base() { }
+  
     }
 }

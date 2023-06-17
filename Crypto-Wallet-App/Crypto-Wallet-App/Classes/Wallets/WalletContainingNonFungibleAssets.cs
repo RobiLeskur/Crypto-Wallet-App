@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Crypto_Wallet_App.Classes.Wallets
 {
-    internal class WalletContainingNonFungibleAssets
+    abstract class WalletContainingNonFungibleAssets : Wallet
     {
+        public List<Guid> ContainedNonFungibleAssets { get; set; } = new List<Guid>();
+        public List<Guid> ListOfSupportedNonFungibleAssets { get; set; } = new List<Guid>();
+
+        public WalletContainingNonFungibleAssets() : base() { }
+        
     }
 }

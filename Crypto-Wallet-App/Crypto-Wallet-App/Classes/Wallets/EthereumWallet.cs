@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Crypto_Wallet_App.Classes.Wallets
 {
-    internal class Ethereum
+     class EthereumWallet : WalletContainingNonFungibleAssets
     {
+        public EthereumWallet() : base() { }
+        
+
     }
 }

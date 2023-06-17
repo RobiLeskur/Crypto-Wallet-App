@@ -1,12 +1,18 @@
-﻿using System;
+﻿using Crypto_Wallet_App.Classes.Assets;
+using Crypto_Wallet_App.Classes.Wallets;
+using System;
 
 namespace Crypto_Wallet_App
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello World!");
+           
+            FungibleAsset asset = new FungibleAsset("Ime", 2.32);
+            Console.WriteLine(asset.Name);
+
         }
+
     }
 }
