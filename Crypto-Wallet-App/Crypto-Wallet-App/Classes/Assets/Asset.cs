@@ -13,6 +13,7 @@ namespace Crypto_Wallet_App.Classes.Assets
         public double Value { get; private set; }
 
         public Asset(string nameOfAsset, double valueOfAsset) { 
+            Address = Guid.NewGuid();
             Name = nameOfAsset;
             Value = valueOfAsset;
         }

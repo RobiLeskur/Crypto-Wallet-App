@@ -8,8 +8,9 @@ namespace Crypto_Wallet_App.Classes.Assets
 {
      class FungibleAsset : Asset
     {
-        public FungibleAsset(string nameOfAsset, double valueOfAsset) : base(nameOfAsset, valueOfAsset){ 
-        
+        public string Type { get; set; }
+        public FungibleAsset(string nameOfAsset,string typeOfAsset, double valueOfAsset) : base(nameOfAsset, valueOfAsset){ 
+            Type = typeOfAsset;
 
         }
     }

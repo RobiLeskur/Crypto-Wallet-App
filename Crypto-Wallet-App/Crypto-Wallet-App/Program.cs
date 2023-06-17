@@ -9,9 +9,6 @@ namespace Crypto_Wallet_App
         static void Main()
         {
            
-            FungibleAsset asset = new FungibleAsset("Ime", 2.32);
-            Console.WriteLine(asset.Name);
-
         }
 
     }

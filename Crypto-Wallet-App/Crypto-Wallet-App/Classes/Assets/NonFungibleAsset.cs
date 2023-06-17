@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Crypto_Wallet_App.Classes.Assets
 {
-    internal class NonFungibleAsset
+    
+     class NonFungibleAsset
     {
+        public Guid adressOfFungibleAssetToWhichItRefers;
+
+        public NonFungibleAsset(string nameOfAsset, double valueOfAsset , Guid anAdressOfFungibleAssetToWhichItRefers) : base(nameOfAsset, valueOfAsset)
+        {
+            adressOfFungibleAssetToWhichItRefers = anAdressOfFungibleAssetToWhichItRefers;
+
+        }
+
     }
 }
