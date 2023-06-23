@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crypto_Wallet_App.Classes.Wallets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,21 @@ namespace Crypto_Wallet_App.Classes.Transactions
         public double WalletBalanceAfterSending { get; set; }
         public double WalletBalanceBeforeReceiving { get; set; }
         public double WalletBalanceAfterReceiving { get; set; }
-        public double HowMuchIsSent { get; set; }
-
-        public FungibleTransaction(Guid anAddress, DateTime aTimeOfTransaction, Guid aSendingAddress, Guid aReceivingAddress,double aHowMuchIsSent ,bool aIsRevoked) : base(anAddress, aTimeOfTransaction, aSendingAddress, aReceivingAddress, aIsRevoked) {
-           WalletBalanceBeforeSending = ;
-           WalletBalanceAfterSending = ;
-            WalletBalanceBeforeReceiving = ;
-            WalletBalanceAfterReceiving = ;
         
+
+        public FungibleTransaction(Guid anAssetAddress, DateTime aTimeOfTransaction, Guid aSendingAddress, Guid aReceivingAddress,double aHowMuchIsSent ,bool aIsRevoked) : base(anAssetAddress, aTimeOfTransaction, aSendingAddress, aReceivingAddress, aIsRevoked) {
+            WalletBalanceBeforeSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress];
+            WalletBalanceAfterSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] - aHowMuchIsSent;
+            WalletBalanceBeforeReceiving = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress];
+            WalletBalanceAfterReceiving = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] + aHowMuchIsSent;
+
         }
+
+         public Wallet GetWalletByAddress(List<Wallet> items, Guid attribute)
+        {
+             return items.Find(item => item.Address == attribute);
+        }
+
+
     }
 }

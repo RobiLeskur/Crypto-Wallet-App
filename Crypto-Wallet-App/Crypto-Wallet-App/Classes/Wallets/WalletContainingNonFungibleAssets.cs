@@ -11,7 +11,8 @@ namespace Crypto_Wallet_App.Classes.Wallets
         public List<Guid> ContainedNonFungibleAssets { get; set; } = new List<Guid>();
         public List<Guid> ListOfSupportedNonFungibleAssets { get; set; } = new List<Guid>();
 
-        public WalletContainingNonFungibleAssets() : base() { }
+
+        public WalletContainingNonFungibleAssets(bool isNew) : base(isNew) { }
         
     }
 }
