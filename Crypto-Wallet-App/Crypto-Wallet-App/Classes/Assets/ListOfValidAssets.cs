@@ -45,5 +45,14 @@ namespace Crypto_Wallet_App.Classes.Assets
 
         };
 
+        public static bool IsAddressFromFungibleAsset(Guid address)
+        {
+            foreach(var item in ListOfFungibleAssets)
+                if (item.Address == address)
+                    return true;
+            return false;
+        }
+
+
     }
 }

@@ -18,5 +18,10 @@ namespace Crypto_Wallet_App.Classes.Assets
             Value = valueOfAsset;
         }
 
+        public void changeAssetValue(double change)
+        {
+            Value = Value + change;
+        }
+
     }
 }

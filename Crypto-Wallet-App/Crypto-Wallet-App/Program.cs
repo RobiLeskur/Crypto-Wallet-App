@@ -1,7 +1,9 @@
 ﻿using Crypto_Wallet_App.Classes.Assets;
+using Crypto_Wallet_App.Classes.Transactions;
 using Crypto_Wallet_App.Classes.Wallets;
 using System;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace Crypto_Wallet_App
 {
@@ -105,11 +107,134 @@ namespace Crypto_Wallet_App
 
         }
 
-        public void Portfolio(Guid address)
+        static void Portfolio(Guid address)
         {
             Wallet wallet = ListOfWallets.AllWallets.Find(obj => obj.Address == address);
-            Console.WriteLine(wallet.ValueOfAllAssets());
+            Console.WriteLine("Ukupna vrijednost svih asseta: " + wallet.ValueOfAllAssets());
+            foreach(var item in ListOfValidAssets.ListOfFungibleAssets)
+            {
+                Console.WriteLine("Adresa: " + item.Address);
+                Console.WriteLine("Ime asseta: " + item.Name);
+                Console.WriteLine("Oznaka: " + item.Type);
+                Console.WriteLine("Vrijednost: " + item.Value);
+                Console.WriteLine("Promijena vrijednosti: 100%" );
+
+            }
            
+
+        }
+
+        static void TransferMenu(Guid SenderAddress)
+        {
+            Console.Clear();
+            foreach (var item in ListOfWallets.AllWallets)
+                PrintWallet(item);
+            Console.WriteLine("\nWALLET KOJEM SE SALJE ");
+            Guid ReceiverAddress = InputGuidIncludingParsing();
+            Console.WriteLine("-FUNGIBLE ASSETI-");
+            foreach (var item in ListOfValidAssets.ListOfFungibleAssets)
+                Console.WriteLine(item.Name + "<->" + item.Address);
+            Wallet wallet = ListOfWallets.AllWallets.Find(obj => obj.Address == SenderAddress);
+            string type = wallet.WalletType;
+            if (type != "BTC") { 
+            Console.WriteLine("-NONFUNGIBLE ASSETI-");
+            foreach (var item in ListOfValidAssets.ListOfNonFungibleAssets)
+                Console.WriteLine(item.Name + "<->" + item.Address);
+            }
+            Console.WriteLine("\nASSET KOJI SE SALJE ");
+            Guid assetAddress = InputGuidIncludingParsing();
+
+
+            if (ListOfValidAssets.IsAddressFromFungibleAsset(assetAddress) == true)
+            {
+                Console.WriteLine("Unesite količinu: ");
+                double howMuch = double.Parse(Console.ReadLine());
+
+                Transaction newTransaction = new FungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, howMuch, false);
+                ListOfTransactions.TransactionList.Add(newTransaction);
+                foreach (var item in ListOfWallets.AllWallets)
+                {
+                    if (SenderAddress == item.Address || ReceiverAddress == item.Address)
+                        item.ListOfTransactionAddresses.Add(newTransaction.Id);
+                }
+
+                foreach (var item in ListOfValidAssets.ListOfFungibleAssets)
+                    if (item.Address == assetAddress)
+                    {
+                        Random random = new Random();
+                        double randomNumber = (random.NextDouble() * 5) - 2.5;
+                        item.changeAssetValue(randomNumber);
+                    }
+
+
+            }
+            else
+            {
+                Transaction newTransaction = new NonFungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, false);
+                ListOfTransactions.TransactionList.Add(newTransaction);
+                foreach (var item in ListOfWallets.AllWallets)
+                {
+                    if (SenderAddress == item.Address || ReceiverAddress == item.Address)
+                        item.ListOfTransactionAddresses.Add(newTransaction.Id);
+                }
+
+
+                foreach (var item in ListOfValidAssets.ListOfNonFungibleAssets)
+                {
+                    if (item.Address == assetAddress)
+                        foreach (var fungible in ListOfValidAssets.ListOfFungibleAssets)
+                            if (item.Address == item.adressOfFungibleAssetToWhichItRefers)
+                            {
+                                Random random = new Random();
+                                double randomNumber = (random.NextDouble() * 5) - 2.5;
+                                item.changeAssetValue(randomNumber);
+                            }
+
+                }
+
+
+
+            }
+
+        }
+
+        static void historyOfTransactions(Guid currentWalletAddress)
+        {
+            foreach(var transaction in ListOfTransactions.TransactionList)
+            {
+                Wallet wallet = ListOfWallets.AllWallets.Find(obj => obj.Address == currentWalletAddress);
+                if (wallet.ListOfTransactionAddresses.Contains(transaction.Id)) { 
+                    Console.WriteLine("ID: " + transaction.Id);
+                     Console.WriteLine("Vrijeme: " + transaction.TimeOfTransaction);
+                Console.WriteLine("Adresa walleta koji prima: " + transaction.ReceivingAddress);
+                   Console.WriteLine("Adresa walleta koji salje: " + transaction.SendingAddress);
+
+                    if(transaction is FungibleTransaction fung && fung != null)
+                    {
+                        Console.WriteLine("Kolicina: " + fung.howMuch);
+                        FungibleAsset fungAsset = ListOfValidAssets.ListOfFungibleAssets.Find(obj => obj.Address == fung.Id);
+                        if (fungAsset != null)
+                        {
+                            Console.WriteLine("Ime: " + fungAsset.Name);
+                        }
+                    }
+                    else if (transaction is NonFungibleTransaction nonFung && nonFung != null)
+                    {
+                        NonFungibleAsset fungAsset = ListOfValidAssets.ListOfNonFungibleAssets.Find(obj => obj.Address == nonFung.Id);
+                        if (fungAsset != null)
+                        {
+                            Console.WriteLine("Ime: " + fungAsset.Name);
+                        }
+
+                    }
+
+                    Console.WriteLine("Je li opozvana: " + transaction.IsRevoked);
+                }
+               
+
+
+
+            }
 
         }
 
@@ -151,23 +276,32 @@ namespace Crypto_Wallet_App
                        while(checkIfGivenAddressExists(walletAddres) == false)
                         walletAddres = InputGuidIncludingParsing();
 
-                       
 
+                        while (true) { 
                         switch (AccessWalletMenu())
                         {
                             case 1:
-                                
-                                break;
+                                Portfolio(walletAddres);
+                                    Console.Write("Bilo sto za povratak: ");
+                                    Console.ReadLine();
+
+                                continue;
                             case 2:
-                                break;
+                                    TransferMenu(walletAddres);
+                                    Console.Write("Bilo sto za povratak: ");
+                                    Console.ReadLine();
+                                    continue;
                             case 3:
-                            
-                                break;
+                                    historyOfTransactions(walletAddres);
+                                    Console.ReadLine();
+
+                                continue;
                             case 4:
                                 break;
                         }
+                        }
 
-                        break;
+                        
                     case 3:
                         return;
 

@@ -20,6 +20,7 @@ namespace Crypto_Wallet_App.Classes.Wallets
 
         public bool isNew;
 
+       
         public void SetBeforeBalanceToCurrent()
         {
             FungibleAssetBalanceBefore = FungibleAssetBalance;
