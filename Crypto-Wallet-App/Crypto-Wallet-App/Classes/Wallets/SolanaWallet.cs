@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Crypto_Wallet_App.Classes.Wallets
 {
@@ -36,6 +37,11 @@ ListOfValidAssets.ListOfNonFungibleAssets[16].Address,
 ListOfValidAssets.ListOfNonFungibleAssets[18].Address,
 ListOfValidAssets.ListOfNonFungibleAssets[19].Address
             };
+
+            foreach (var item in ListOfSupportedFungibleAssets)
+                ListOfAllSupportedAssets.Add(item);
+            foreach (var item in ListOfSupportedNonFungibleAssets)
+                ListOfAllSupportedAssets.Add(item);
 
             if (isNew == false)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crypto_Wallet_App.Classes.Wallets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,10 +26,22 @@ namespace Crypto_Wallet_App.Classes.Transactions
             IsRevoked = isRevoked;
             
         }
-        
-        
+        public void revertTransaction(Guid anAssetAddress, double aHowMuchIsSent)
+        {
+            GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] += aHowMuchIsSent;
+            GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] -= aHowMuchIsSent;
 
-       
+        }
+
+        public Wallet GetWalletByAddress(List<Wallet> items, Guid attribute)
+        {
+
+            return items.Find(item => item.Address == attribute);
+
+        }
+
+
+
 
     }
 }

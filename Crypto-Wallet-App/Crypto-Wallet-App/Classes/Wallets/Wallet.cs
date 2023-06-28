@@ -15,7 +15,10 @@ namespace Crypto_Wallet_App.Classes.Wallets
         public Dictionary<Guid, double> FungibleAssetBalanceBefore { get; private set; } = new Dictionary<Guid, double>();
         public List<Guid> ListOfSupportedFungibleAssets { get; set; } = new List<Guid>();
         public List<Guid> ListOfTransactionAddresses { get; private set; } = new List<Guid>();
-        
+
+        public List<Guid> ListOfAllSupportedAssets { get; set; } = new List<Guid> { };
+
+
         public string WalletType { get; set; } = "";
 
         public bool isNew;
@@ -30,6 +33,7 @@ namespace Crypto_Wallet_App.Classes.Wallets
         public Wallet(bool aIsNew) {
             Address = Guid.NewGuid();
             isNew = aIsNew;
+            ListOfAllSupportedAssets = ListOfSupportedFungibleAssets;
         }
 
         public void GiveAllSupportedAssetsAValue()

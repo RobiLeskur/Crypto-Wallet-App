@@ -14,6 +14,7 @@ namespace Crypto_Wallet_App.Classes.Wallets
 
 
         public WalletContainingNonFungibleAssets(bool isNew) : base(isNew) { }
+        
 
         public override double ValueOfAllAssets()
         {

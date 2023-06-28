@@ -20,17 +20,17 @@ namespace Crypto_Wallet_App.Classes.Transactions
 
         public FungibleTransaction(Guid anAssetAddress, DateTime aTimeOfTransaction, Guid aSendingAddress, Guid aReceivingAddress,double aHowMuchIsSent ,bool aIsRevoked) : base(anAssetAddress, aTimeOfTransaction, aSendingAddress, aReceivingAddress, aIsRevoked) {
             WalletBalanceBeforeSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress];
-            WalletBalanceAfterSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] - aHowMuchIsSent;
-            WalletBalanceBeforeReceiving = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress];
-            WalletBalanceAfterReceiving = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] + aHowMuchIsSent;
-            howMuch = aHowMuchIsSent;
+            GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] -= aHowMuchIsSent;
+            WalletBalanceAfterSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress];
+            WalletBalanceBeforeReceiving = GetWalletByAddress(ListOfWallets.AllWallets, ReceivingAddress).FungibleAssetBalance[anAssetAddress];
+            GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress] += aHowMuchIsSent;
+            WalletBalanceAfterSending = GetWalletByAddress(ListOfWallets.AllWallets, SendingAddress).FungibleAssetBalance[anAssetAddress]; howMuch = aHowMuchIsSent;
         }
+        
 
-         public Wallet GetWalletByAddress(List<Wallet> items, Guid attribute)
-        {
-                return items.Find(item => item.Address == attribute);
-            
-        }
+        
+
+        
 
       
 

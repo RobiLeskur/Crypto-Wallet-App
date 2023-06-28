@@ -90,13 +90,24 @@ namespace Crypto_Wallet_App
             Console.WriteLine($"Tip walleta : {wallet.WalletType}");
             Console.WriteLine($"Adresa walleta : {wallet.Address}");
             Console.WriteLine($"Ukupna vrijednosti asseta : {wallet.ValueOfAllAssets()}");
-            Console.WriteLine($"Promjena vrijenosti : {wallet.ValueOfAllAssets()/wallet.ValueOfAllAssetsBefore()}");
+            Console.WriteLine($"Promjena vrijenosti : {wallet.ValueOfAllAssets()/wallet.ValueOfAllAssetsBefore()*100}%");
 
             wallet.SetBeforeBalanceToCurrent();
 
         }
 
-        static bool checkIfGivenAddressExists(Guid address)
+        static bool checkIfGivenTransactionAddressExists(Guid address)
+        {
+            foreach (var item in ListOfTransactions.TransactionList)
+                if (item.Id == address)
+                    return true;
+            Console.WriteLine("Adresa koju ste unijeli ne postoji");
+            return false;
+
+
+        }
+
+        static bool checkIfGivenWalletAddressExists(Guid address)
         {
             foreach(var item in ListOfWallets.AllWallets)
                 if (item.Address == address)
@@ -131,27 +142,56 @@ namespace Crypto_Wallet_App
                 PrintWallet(item);
             Console.WriteLine("\nWALLET KOJEM SE SALJE ");
             Guid ReceiverAddress = InputGuidIncludingParsing();
-            Console.WriteLine("-FUNGIBLE ASSETI-");
+
+
+            Wallet SenderWallet = ListOfWallets.AllWallets.Find(obj => obj.Address == SenderAddress);
+            string senderType = SenderWallet.WalletType;
+
+            Wallet ReceiverWallet = ListOfWallets.AllWallets.Find(obj => obj.Address == ReceiverAddress);
+            string receiverType = ReceiverWallet.WalletType;
+
+
+            if (senderType == "BTC" ||receiverType =="BTC") { 
+                Console.WriteLine("-FUNGIBLE ASSETI-");
+          
+
             foreach (var item in ListOfValidAssets.ListOfFungibleAssets)
-                Console.WriteLine(item.Name + "<->" + item.Address);
-            Wallet wallet = ListOfWallets.AllWallets.Find(obj => obj.Address == SenderAddress);
-            string type = wallet.WalletType;
-            if (type != "BTC") { 
-            Console.WriteLine("-NONFUNGIBLE ASSETI-");
+                if (SenderWallet.ListOfSupportedFungibleAssets.Contains(item.Address) && ReceiverWallet.ListOfSupportedFungibleAssets.Contains(item.Address))
+                    Console.WriteLine(item.Name + " <-> " + item.Address);
+            }
+
+            else {
+
+                Console.WriteLine("FUNGIBLE ASSETI-");
+                foreach (var item in ListOfValidAssets.ListOfFungibleAssets)
+                    if (SenderWallet.ListOfAllSupportedAssets.Contains(item.Address) && ReceiverWallet.ListOfAllSupportedAssets.Contains(item.Address))
+                        Console.WriteLine(item.Name + "<->" + item.Address);
+
+
+                Console.WriteLine("-NONFUNGIBLE ASSETI-");
             foreach (var item in ListOfValidAssets.ListOfNonFungibleAssets)
+                    if(SenderWallet.ListOfAllSupportedAssets.Contains(item.Address) && ReceiverWallet.ListOfAllSupportedAssets.Contains(item.Address))
                 Console.WriteLine(item.Name + "<->" + item.Address);
             }
             Console.WriteLine("\nASSET KOJI SE SALJE ");
+
             Guid assetAddress = InputGuidIncludingParsing();
+            /*  Guid assetAddress;
+              do {
+                  assetAddress = InputGuidIncludingParsing();
 
 
+              } while (SenderWallet.ListOfSupportedFungibleAssets.Contains(assetAddress) && ReceiverWallet.ListOfSupportedFungibleAssets.Contains(assetAddress));
+            */
             if (ListOfValidAssets.IsAddressFromFungibleAsset(assetAddress) == true)
             {
                 Console.WriteLine("Unesite količinu: ");
                 double howMuch = double.Parse(Console.ReadLine());
 
-                Transaction newTransaction = new FungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, howMuch, false);
+                FungibleTransaction newTransaction = new FungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, howMuch, false);
                 ListOfTransactions.TransactionList.Add(newTransaction);
+                ListOfTransactions.FungibleTransactionList.Add(newTransaction);
+
                 foreach (var item in ListOfWallets.AllWallets)
                 {
                     if (SenderAddress == item.Address || ReceiverAddress == item.Address)
@@ -170,8 +210,10 @@ namespace Crypto_Wallet_App
             }
             else
             {
-                Transaction newTransaction = new NonFungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, false);
+                NonFungibleTransaction newTransaction = new NonFungibleTransaction(assetAddress, DateTime.Now, SenderAddress, ReceiverAddress, false);
                 ListOfTransactions.TransactionList.Add(newTransaction);
+                ListOfTransactions.NonFungibleTransactionList.Add(newTransaction);
+
                 foreach (var item in ListOfWallets.AllWallets)
                 {
                     if (SenderAddress == item.Address || ReceiverAddress == item.Address)
@@ -238,6 +280,32 @@ namespace Crypto_Wallet_App
 
         }
 
+        static void RevokeTransaction()
+        {
+            Console.Clear();
+            Console.WriteLine("--TRANSAKCIJE--");
+            if(ListOfTransactions.TransactionList.Count == 0 ) { Console.WriteLine("Nema transakcija"); return; }
+            ListOfTransactions.PrintTransactions();
+            Console.WriteLine();
+            Console.WriteLine("Unesite adresu koju bi opozvali: ");
+            Guid transactionAddress = InputGuidIncludingParsing();
+            while (checkIfGivenTransactionAddressExists(transactionAddress) == false)
+                transactionAddress = InputGuidIncludingParsing();
+            foreach(var item in ListOfTransactions.FungibleTransactionList)
+            {
+                if(item.Id == transactionAddress)
+                {
+                    item.revertTransaction(item.AssetAddress, item.howMuch);
+                    item.IsRevoked = true;
+                    
+                }
+                    
+            }
+
+
+        }
+
+
 
 
         static void Main()
@@ -268,39 +336,51 @@ namespace Crypto_Wallet_App
                         }
                         break;
                     case 2:
+                        Console.Clear();
                         foreach(var item in ListOfWallets.AllWallets)
                             PrintWallet(item);
 
                         Console.WriteLine("Unesi adresu zeljenog wallta");
                         Guid walletAddres = InputGuidIncludingParsing();
-                       while(checkIfGivenAddressExists(walletAddres) == false)
+                       while(checkIfGivenWalletAddressExists(walletAddres) == false)
                         walletAddres = InputGuidIncludingParsing();
 
-
                         while (true) { 
-                        switch (AccessWalletMenu())
+                        int checker = AccessWalletMenu();
+                            if (checker == 5) break;
+                        switch (checker)
                         {
                             case 1:
+                                    Console.Clear();
                                 Portfolio(walletAddres);
                                     Console.Write("Bilo sto za povratak: ");
                                     Console.ReadLine();
 
-                                continue;
+                                break; 
                             case 2:
+                                    Console.Clear();
                                     TransferMenu(walletAddres);
                                     Console.Write("Bilo sto za povratak: ");
                                     Console.ReadLine();
-                                    continue;
+                                 break;
                             case 3:
+                                    Console.Clear();
+
                                     historyOfTransactions(walletAddres);
                                     Console.ReadLine();
 
                                 continue;
                             case 4:
+                                    Console.Clear();
+                                    RevokeTransaction();
+                                    Console.ReadLine();
                                 break;
                         }
+                            
                         }
 
+
+                        break;
                         
                     case 3:
                         return;

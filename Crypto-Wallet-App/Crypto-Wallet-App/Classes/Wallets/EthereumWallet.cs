@@ -35,6 +35,10 @@ ListOfValidAssets.ListOfNonFungibleAssets[18].Address,
 ListOfValidAssets.ListOfNonFungibleAssets[19].Address
 };
 
+            foreach (var item in ListOfSupportedFungibleAssets)
+                ListOfAllSupportedAssets.Add(item);
+            foreach (var item in ListOfSupportedNonFungibleAssets)
+                ListOfAllSupportedAssets.Add(item);
 
             if (isNew == false)
             {
