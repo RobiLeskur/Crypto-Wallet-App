@@ -176,13 +176,7 @@ namespace Crypto_Wallet_App
             Console.WriteLine("\nASSET KOJI SE SALJE ");
 
             Guid assetAddress = InputGuidIncludingParsing();
-            /*  Guid assetAddress;
-              do {
-                  assetAddress = InputGuidIncludingParsing();
-
-
-              } while (SenderWallet.ListOfSupportedFungibleAssets.Contains(assetAddress) && ReceiverWallet.ListOfSupportedFungibleAssets.Contains(assetAddress));
-            */
+            
             if (ListOfValidAssets.IsAddressFromFungibleAsset(assetAddress) == true)
             {
                 Console.WriteLine("Unesite količinu: ");
@@ -287,6 +281,11 @@ namespace Crypto_Wallet_App
             if(ListOfTransactions.TransactionList.Count == 0 ) { Console.WriteLine("Nema transakcija"); return; }
             ListOfTransactions.PrintTransactions();
             Console.WriteLine();
+            Console.WriteLine("1 - Opozivanje");
+            Console.WriteLine("2 - Povratak");
+            switch(InputIncludingParsing(2)) {
+                case 1:
+
             Console.WriteLine("Unesite adresu koju bi opozvali: ");
             Guid transactionAddress = InputGuidIncludingParsing();
             while (checkIfGivenTransactionAddressExists(transactionAddress) == false)
@@ -296,14 +295,26 @@ namespace Crypto_Wallet_App
                 if(item.Id == transactionAddress)
                 {
                     item.revertTransaction(item.AssetAddress, item.howMuch);
+                    if(item.IsRevoked == true) { 
+                        Console.WriteLine("Transakcija je vec opozvana!");
+                    return;
+                    }
                     item.IsRevoked = true;
                     
+                    
                 }
+                        else
+                        {
+                            item.IsRevoked = true;
+                        }
                     
             }
-
-
+                    break;
+                    case 2:
+                    break;
         }
+
+    }
 
 
 
@@ -373,7 +384,6 @@ namespace Crypto_Wallet_App
                             case 4:
                                     Console.Clear();
                                     RevokeTransaction();
-                                    Console.ReadLine();
                                 break;
                         }
                             
